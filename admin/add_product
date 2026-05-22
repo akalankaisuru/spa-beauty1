@@ -1,0 +1,113 @@
+<?php
+include "../includes/db.php";
+include "../includes/admin_auth.php";
+
+if($_POST){
+
+$name = $_POST['name'];
+$category = $_POST['category'];
+$price = $_POST['price'];
+$stock = $_POST['stock'];
+
+$image = $_FILES['image']['name'];
+
+move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/".$image);
+
+$conn->query("INSERT INTO products(name,category,price,stock,image)
+VALUES('$name','$category','$price','$stock','$image')");
+
+header("Location: dashboard.php");
+exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #141e30, #243b55);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-box {
+            width: 500px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .btn-custom {
+            width: 100%;
+            background: #00b894;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .btn-custom:hover {
+            background: #00a383;
+        }
+
+        .file-box {
+            padding: 10px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card-box">
+
+    <h3 class="title">➕ Add New Product</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input class="form-control mb-3" name="name" placeholder="Product Name">
+
+        <select class="form-control mb-3" name="category" required>
+            <option value="">Select Category</option>
+            <option value="Hair Care">Hair Care</option>
+            <option value="Face Products">Face Products</option>
+            <option value="Body Lotion">Body Lotion</option>
+            <option value="Foot Products">Foot Products</option>
+        </select>
+
+        <input class="form-control mb-3" name="price" placeholder="Price">
+
+        <input class="form-control mb-3" name="stock" placeholder="Stock">
+
+        <div class="file-box mb-3">
+            <input type="file" name="image">
+        </div>
+
+        <button class="btn btn-custom">Add Product</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
